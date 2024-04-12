@@ -1,0 +1,9 @@
+spring:
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    studentsTopic: 'students'
+    addMarkTopic: 'add_mark'
+server:
+  port: '8081'
+data_service:
+  url: 'http://localhost:8080/students'
