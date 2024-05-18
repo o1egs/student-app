@@ -12,4 +12,12 @@ public interface StudentService {
     List<StudentDTO> findAllStudents();
 
     StudentDTO findById(Long studentId);
+
+    List<StudentDTO> findAllExcellentStudents();
+
+    List<AvgMarkDTO> topAvgMarkList();
+
+    List<LessonAvgDTO> avgMarksByLesson();
+
+    List<NumberOfMarksDTO> topNumberOfMarks();
 }
