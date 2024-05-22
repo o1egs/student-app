@@ -1,9 +1,13 @@
 spring:
   kafka:
-    bootstrap-servers: 'localhost:9092'
+    bootstrapAddress: 'localhost:9092'
     studentsTopic: 'students'
+    studentsTopicPartitions: 3
     addMarkTopic: 'add_mark'
+    addMarkTopicPartitions: 5
 server:
   port: '8081'
 data_service:
   url: 'http://localhost:8080/students'
+
+

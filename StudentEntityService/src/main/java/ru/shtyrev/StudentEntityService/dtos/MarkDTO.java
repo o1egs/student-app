@@ -13,5 +13,5 @@ import ru.shtyrev.StudentEntityService.enums.Lesson;
 @ToString
 public class MarkDTO {
     private Lesson lesson;
-    private int mark;
+    private Integer mark;
 }

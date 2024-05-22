@@ -22,6 +22,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
         Student student = studentMapper.studentDTOToStudent(studentDTO);
+        List<Mark> marks = student.getMarks().stream()
+                .peek(mark -> mark.setStudent(student))
+                .toList();
+        student.setMarks(marks);
         Student save = studentRepository.save(student);
         return studentMapper.studentToStudentDTO(save);
     }
@@ -38,7 +42,6 @@ public class StudentServiceImpl implements StudentService {
         student.getMarks().add(newMark);
 
         Student save = studentRepository.save(student);
-        System.out.println(save);
     }
 
     @Override
@@ -79,9 +82,9 @@ public class StudentServiceImpl implements StudentService {
     public List<AvgMarkDTO> topAvgMarkList() {
         List<AvgMarkDTO> sorted = this.findAllStudents().stream()
                 .map(this::getAvgMarkDTO)
-                .sorted(Comparator.comparingDouble(AvgMarkDTO::getAvgMark))
+                .sorted(Comparator.comparingDouble(AvgMarkDTO::getAvgMark).reversed())
                 .toList();
-        return sorted.size() >= 3 ? sorted.subList(sorted.size() - 3, sorted.size()) : sorted;
+        return sorted.size() >= 3 ? sorted.subList(0, 3) : sorted;
     }
 
     private AvgMarkDTO getAvgMarkDTO(StudentDTO s) {
@@ -141,11 +144,10 @@ public class StudentServiceImpl implements StudentService {
                                 .name(studentDTO.getName())
                                 .numberOfMarks(studentDTO.getMarks().size())
                                 .build())
-                        .sorted(Comparator.comparingInt(NumberOfMarksDTO::getNumberOfMarks))
+                        .sorted(Comparator.comparingInt(NumberOfMarksDTO::getNumberOfMarks).reversed())
                         .toList()
         );
-        Collections.reverse(numberOfMarksDTOS);
-        return numberOfMarksDTOS;
+        return numberOfMarksDTOS.size() >= 3 ? numberOfMarksDTOS.subList(0, 3) : numberOfMarksDTOS;
 
     }
 }

@@ -1,10 +1,12 @@
 package ru.shtyrev.StudentApiService.configs;
 
+import lombok.Setter;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -17,10 +19,15 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Setter
 @Configuration
+@ConfigurationProperties(prefix = "spring.kafka")
 public class KafkaProducerConfig {
-    @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
+    private String studentsTopic;
+    private Integer studentsTopicPartitions;
+    private String addMarkTopic;
+    private Integer addMarkTopicPartitions;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -31,12 +38,12 @@ public class KafkaProducerConfig {
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic("student", 1, (short) 1);
+        return new NewTopic(studentsTopic, studentsTopicPartitions, (short) 1);
     }
 
     @Bean
     public NewTopic topic2() {
-        return new NewTopic("add_mark", 1, (short) 1);
+        return new NewTopic(addMarkTopic, addMarkTopicPartitions, (short) 1);
     }
 
     @Bean

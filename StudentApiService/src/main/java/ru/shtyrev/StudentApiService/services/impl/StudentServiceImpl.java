@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.shtyrev.StudentApiService.services.StudentService;
 import ru.shtyrev.StudentEntityService.dtos.*;
-import ru.shtyrev.StudentEntityService.enums.Lesson;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
-import static java.util.Objects.*;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +33,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
-        CompletableFuture<SendResult<String, Object>> completableFuture = kafkaTemplate.send(studentsTopic, studentDTO);
+        Integer partition = UUID.randomUUID().hashCode() % 3;
+        String key = String.valueOf(UUID.randomUUID().hashCode() % 3);
+
+        CompletableFuture<SendResult<String, Object>> completableFuture =
+
+                kafkaTemplate.send(studentsTopic, partition, key, studentDTO);
+
         completableFuture.whenComplete((stringObjectSendResult, throwable) -> {
             if (throwable == null) {
                 System.out.println("Message sent");
@@ -47,7 +53,14 @@ public class StudentServiceImpl implements StudentService {
         AddMarkDTO addMarkDTO = new AddMarkDTO();
         addMarkDTO.setStudentId(studentId);
         addMarkDTO.setMarkDTO(markDTO);
-        CompletableFuture<SendResult<String, Object>> completableFuture = kafkaTemplate.send(addMarkTopic, addMarkDTO);
+
+        Integer partition = markDTO.getMark() - 1;
+        String key = String.valueOf(markDTO.getMark() - 1);
+
+        CompletableFuture<SendResult<String, Object>> completableFuture =
+
+                kafkaTemplate.send(addMarkTopic, partition, key, addMarkDTO);
+
         completableFuture.whenComplete((stringObjectSendResult, throwable) -> {
             if (throwable == null) {
                 System.out.println("Message sent");

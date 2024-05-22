@@ -22,5 +22,5 @@ public class Mark {
     private Student student;
     @Enumerated(EnumType.STRING)
     private Lesson lesson;
-    private int mark;
+    private Integer mark;
 }
