@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
     private String studentsTopic;
     @Value(value = "${spring.kafka.addMarkTopic}")
     private String addMarkTopic;
-    @Value(value = "${data_service.url}")
+    @Value(value = "${data-service.url}")
     private String URL;
     private final RestTemplate restTemplate;
     private final KafkaTemplate<String, Object> kafkaTemplate;

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ru.shtyrev.StudentDataService.services.StudentService;
-import ru.shtyrev.StudentEntityService.dtos.StudentDTO;
 import ru.shtyrev.StudentEntityService.dtos.AddMarkDTO;
+import ru.shtyrev.StudentEntityService.dtos.StudentDTO;
 
 @Component
 @RequiredArgsConstructor

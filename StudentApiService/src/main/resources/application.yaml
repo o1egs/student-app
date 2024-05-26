@@ -7,7 +7,12 @@ spring:
     addMarkTopicPartitions: 5
 server:
   port: '8081'
-data_service:
+data-service:
   url: 'http://localhost:8080/students'
+  findAllStudents: 'http://localhost:8080/students'
+  findAllExcellentStudents: 'http://localhost:8080/students/excellent'
+  topAvgMarkList: 'http://localhost:8080/students/topAvgMarks'
+  avgMarkByLesson: 'http://localhost:8080/students/avgMarkByLesson'
+  topNumberOfMarks: 'http://localhost:8080/students/topNumberOfMarks'
 
 
